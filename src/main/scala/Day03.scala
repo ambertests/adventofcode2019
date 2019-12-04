@@ -60,8 +60,8 @@ object Day03 extends App {
   val lines = Using(Source.fromResource("day03.txt")){_.getLines().toList}.get
   val wire1 = processLine(lines(0))
   val wire2 = processLine(lines(1))
-  println("Part 1: " + getClosestIntersectionDistance(wire1, wire2))
-  println("Part 2: " + getShortestIntersectionPath(wire1, wire2))
+  println("Solution 3.1: " + getClosestIntersectionDistance(wire1, wire2))
+  println("Solution 3.2: " + getShortestIntersectionPath(wire1, wire2))
 
 
 

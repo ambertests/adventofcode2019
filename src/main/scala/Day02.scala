@@ -38,14 +38,14 @@ object Day02 extends App {
   /*
   before running the program, replace position 1 with the value 12 and replace position 2 with the value 2
    */
-  println("Part 1: " + checkInputs(12, 2))
+  println("Solution 2.1: " + checkInputs(12, 2))
 
   breakable {
     0 to 99 foreach { n =>
       0 to 99 foreach { v =>
         val output = checkInputs(n, v)
         if (output == 19690720) {
-          println("Part 2: " + (100 * n + v))
+          println("Solution 2.2: " + (100 * n + v))
           break
         }
       }

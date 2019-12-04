@@ -1,3 +1,5 @@
+import scala.io.Source
+import scala.util.Using
 import util.control.Breaks._
 
 object Day04 extends App{
@@ -25,14 +27,17 @@ object Day04 extends App{
     hasDouble & noDecrease
   }
 
-  //input = "178416-676461"
+  val input = Using(Source.fromResource("day04.txt")){_.mkString}.get
+  val lower = input.split("-")(0).toInt
+  val upper = input.split("-")(1).toInt
+
   var valid = 0
   var valid2 = 0
-  for (num <- 178416 to 676461){
+  for (num <- lower to upper){
     if(isValid(num)) valid += 1
     if(isValid(num, part2 = true)) valid2 += 1
   }
-  println("Part 1: " + valid)
-  println("Part 2: " + valid2)
+  println("Solution 4.1: " + valid)
+  println("Solution 4.2: " + valid2)
 
 }

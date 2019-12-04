@@ -27,7 +27,7 @@ object Day01 extends App {
     })
   }
 
-  println("Part One: " + partOne)
-  println("Part Two: " + partTwo)
+  println("Solution 1.1: " + partOne)
+  println("Solution 1.2: " + partTwo)
 
 }
