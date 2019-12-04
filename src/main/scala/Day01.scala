@@ -1,13 +1,11 @@
 import scala.annotation.tailrec
-import scala.io.Source
-import scala.util.Using
 
-object Day01 extends App {
-  var partOne: Double = 0
-  var partTwo: Double = 0
+object Day01 extends AOCSolution {
+
+  override var day: Int = 1
 
   def fuelForMass(mass: Double): Double = {
-    Math.floor(mass/3) - 2
+    Math.floor(mass / 3) - 2
   }
 
   @tailrec
@@ -19,15 +17,17 @@ object Day01 extends App {
     }
   }
 
-  Using(Source.fromResource("day01.txt")) {
-    _.getLines().foreach(line => {
-      val mass = Integer.valueOf(line).doubleValue()
-      partOne += fuelForMass(mass)
-      partTwo += totalFuel(mass, 0)
-    })
-  }
+  var partOne: Double = 0
+  var partTwo: Double = 0
 
-  println("Solution 1.1: " + partOne)
-  println("Solution 1.2: " + partTwo)
+  getInputStrings.foreach(line => {
+    val mass = Integer.valueOf(line).doubleValue()
+    partOne += fuelForMass(mass)
+    partTwo += totalFuel(mass, 0)
+  })
+
+  printPartOne(partOne)
+  printPartTwo(partTwo)
 
 }
+

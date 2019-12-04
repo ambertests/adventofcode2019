@@ -1,8 +1,7 @@
-import scala.io.Source
-import scala.util.Using
 import util.control.Breaks._
 
-object Day04 extends App{
+object Day04 extends AOCSolution {
+  override var day = 4
 
   def isValid(i:Int, part2:Boolean = false): Boolean = {
     val nums = for (n <- i.toString.toCharArray) yield n - '0' //offset the ascii code with the value for '0' (48)
@@ -27,7 +26,7 @@ object Day04 extends App{
     hasDouble & noDecrease
   }
 
-  val input = Using(Source.fromResource("day04.txt")){_.mkString}.get
+  val input = getInputString
   val lower = input.split("-")(0).toInt
   val upper = input.split("-")(1).toInt
 
@@ -37,7 +36,7 @@ object Day04 extends App{
     if(isValid(num)) valid += 1
     if(isValid(num, part2 = true)) valid2 += 1
   }
-  println("Solution 4.1: " + valid)
-  println("Solution 4.2: " + valid2)
+  printPartOne(valid)
+  printPartTwo(valid2)
 
 }

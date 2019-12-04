@@ -1,9 +1,9 @@
 import scala.annotation.tailrec
-import scala.io.Source
-import scala.util.Using
 import util.control.Breaks._
 
-object Day02 extends App {
+object Day02 extends AOCSolution {
+
+  override var day: Int = 2
 
   def processInput(str:String): Array[Int] = {
     str.split(",").map(_.toInt)
@@ -26,7 +26,8 @@ object Day02 extends App {
     }
   }
 
-  val orig:Array[Int] = processInput(Using(Source.fromResource("day02.txt")){ _.mkString}.get)
+
+  val orig:Array[Int] = processInput(getInputString)
 
   def checkInputs(noun: Int, verb: Int):Int = {
     val arr = orig.clone
@@ -35,17 +36,14 @@ object Day02 extends App {
     computeArray(0, arr)(0)
   }
 
-  /*
-  before running the program, replace position 1 with the value 12 and replace position 2 with the value 2
-   */
-  println("Solution 2.1: " + checkInputs(12, 2))
+  printPartOne(checkInputs(12, 2))
 
   breakable {
     0 to 99 foreach { n =>
       0 to 99 foreach { v =>
         val output = checkInputs(n, v)
         if (output == 19690720) {
-          println("Solution 2.2: " + (100 * n + v))
+          printPartTwo(100 * n + v)
           break
         }
       }
