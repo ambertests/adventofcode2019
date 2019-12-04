@@ -24,21 +24,11 @@ object Day03 extends AOCSolution {
   }
 
   def getClosestIntersectionDistance(list1: List[Coordinate], list2: List[Coordinate]): Int = {
-    var minDistance = Int.MaxValue
-    list1.intersect(list2).foreach(c => {
-      val d = Coordinate(0,0).distance(c)
-      if (d < minDistance) minDistance = d
-    })
-    minDistance
+    list1.intersect(list2).map(c => c.distance(Coordinate(0,0))).min
   }
 
   def getShortestIntersectionPath(list1: List[Coordinate], list2: List[Coordinate]): Int = {
-    var minPath = Int.MaxValue
-    list1.intersect(list2).foreach(c => {
-      val combinedPath = list1.indexOf(c) + list2.indexOf(c) + 2
-      if (combinedPath < minPath) minPath = combinedPath
-    })
-    minPath
+    list1.intersect(list2).map(c => list1.indexOf(c) + list2.indexOf(c) + 2).min
   }
 
   val lines = getInputStrings
