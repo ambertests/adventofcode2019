@@ -9,13 +9,13 @@ class Day04Test extends FunSpec {
     123789 does not meet these criteria (no double).
     */
     it("example 1"){
-      assert(Day04.isValid(111111))
+      assert(Day04.isValid(111111)._1)
     }
     it("example 2"){
-      assert(!Day04.isValid(223450))
+      assert(!Day04.isValid(223450)._1)
     }
     it("example 3"){
-      assert(!Day04.isValid(123789))
+      assert(!Day04.isValid(123789)._1)
     }
   }
   describe("Password Validation Part 2") {
@@ -25,13 +25,13 @@ class Day04Test extends FunSpec {
     111122 meets the criteria (even though 1 is repeated more than twice, it still contains a double 22).
      */
     it("example 1"){
-      assert(Day04.isValid(112233, part2 = true))
+      assert(Day04.isValid(112233)._2)
     }
     it("example 2"){
-      assert(!Day04.isValid(123444, part2 = true))
+      assert(!Day04.isValid(123444)._2)
     }
     it("example 3"){
-      assert(Day04.isValid(111122, part2 = true))
+      assert(Day04.isValid(111122)._2)
     }
   }
 
