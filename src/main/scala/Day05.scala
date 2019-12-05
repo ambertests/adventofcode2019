@@ -26,7 +26,8 @@ object Day05 extends AOCSolution {
       }
       val writeLoc = {
         if(cmd == 3) arr(pos + 1)
-        else arr(pos + 3)
+        else if(Array(1,2,7,8).contains(cmd)) arr(pos + 3)
+        else 0
       }
       val newPos = cmd match {
         case 1 => {
@@ -79,5 +80,4 @@ object Day05 extends AOCSolution {
   val program = getInputString.split(",").map(_.toInt)
   printPartOne(doCompute(program, 1))
   printPartTwo(doCompute(program, 5))
-
 }
