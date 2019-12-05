@@ -3,8 +3,6 @@ import scala.annotation.tailrec
 object Day05 extends AOCSolution {
   override var day = 5
 
-  //val output = new StringBuilder()
-
   def getParamValue(pType:Int, pPosition:Int, arr:Array[Int]): Int = {
     if(pType == 0) arr(arr(pPosition))
     else arr(pPosition)
@@ -27,48 +25,45 @@ object Day05 extends AOCSolution {
         else 0
       }
       val writeLoc = {
-        // the third parameter is a write location, which will always be positional
         if(cmd == 3) arr(pos + 1)
         else arr(pos + 3)
       }
-      cmd match {
+      val newPos = cmd match {
         case 1 => {
           arr(writeLoc) = param1 + param2
+          pos + 4
         }
         case 2 => {
           arr(writeLoc) = param1 * param2
+          pos + 4
         }
-        case 3 => arr(writeLoc) = input
-        case 4 => output.append(param1)
-        case 5 =>
-        case 6 =>
+        case 3 => {
+          arr(writeLoc) = input
+          pos + 2
+        }
+        case 4 => {
+          output.append(param1)
+          pos + 2
+        }
+        case 5 => {
+          if(param1 != 0) param2
+          else pos + 3 //opcode + 2 parameters
+        }
+        case 6 => {
+          if(param1 == 0) param2
+          else pos + 3
+        }
         case 7 => {
           if(param1 < param2) arr(writeLoc) = 1
           else arr(writeLoc) = 0
+          pos + 4
         }
         case 8 => {
           if(param1 == param2) arr(writeLoc) = 1
           else arr(writeLoc) = 0
+          pos + 4
         }
 
-      }
-      val newPos = {
-        cmd match {
-          case 1 => pos + 4 //opcode + 3 parameters
-          case 2 => pos + 4
-          case 3 => pos + 2 //opcode + 1 parameter
-          case 4 => pos + 2
-          case 5 => {
-            if(param1 != 0) param2
-            else pos + 3 //opcode + 2 parameters
-          }
-          case 6 => {
-            if(param1 == 0) param2
-            else pos + 3
-          }
-          case 7 => pos + 4
-          case 8 => pos + 4
-        }
       }
       computeArray(arr, newPos, input, output)
     }
