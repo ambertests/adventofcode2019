@@ -3,66 +3,86 @@ import scala.annotation.tailrec
 object Day05 extends AOCSolution {
   override var day = 5
 
-  val input = 1
-  val output = new StringBuilder()
+  //val output = new StringBuilder()
 
-  def doAddition(opCode:Int, param1:Int, param2:Int, loc:Int, arr:Array[Int]):Unit = {
-    val pType1 = (opCode / 100) % 10
-    val pType2 = (opCode / 1000) % 10
-    val i1 = {
-      if(pType1 == 0) arr(param1)
-      else param1
-    }
-    val i2 = {
-      if (pType2 == 0) arr(param2)
-      else param2
-    }
-    arr(loc) = i1 + i2
-  }
-  def doMultiplication(opCode:Int, param1:Int, param2:Int, loc:Int, arr:Array[Int]):Unit = {
-    val pType1 = (opCode / 100) % 10
-    val pType2 = (opCode / 1000) % 10
-    val i1 = {
-      if(pType1 == 0) arr(param1)
-      else param1
-    }
-    val i2 = {
-      if (pType2 == 0) arr(param2)
-      else param2
-    }
-    arr(loc) = i1 * i2
+  def getParamValue(pType:Int, pPosition:Int, arr:Array[Int]): Int = {
+    if(pType == 0) arr(arr(pPosition))
+    else arr(pPosition)
   }
   @tailrec
-  def computeArray(arr:Array[Int], pos: Integer): Array[Int] = {
-    /*
-    Opcode 3 takes a single integer as input and saves it to the address given by its only parameter. For example, the instruction 3,50 would take an input value and store it at address 50.
-    Opcode 4 outputs the value of its only parameter. For example, the instruction 4,50 would output the value at address 50.
-     */
+  def computeArray(arr:Array[Int], pos: Integer, input: Integer, output: StringBuilder): Array[Int] = {
+
     val opCode = arr(pos)
     val cmd = opCode % 100
     if(cmd == 99) arr
     else {
+      val pType1 = (opCode / 100) % 10
+      val pType2 = (opCode / 1000) % 10
+      val param1 = getParamValue(pType1, pos + 1, arr)
+      val param2 = {
+        // ops 3 and 4 only take one param, so trying to get the second could cause an error
+        if(cmd != 3 && cmd != 4){
+          getParamValue(pType2, pos + 2, arr)
+        }
+        else 0
+      }
+      val writeLoc = {
+        // the third parameter is a write location, which will always be positional
+        if(cmd == 3) arr(pos + 1)
+        else arr(pos + 3)
+      }
       cmd match {
-        case 1 => doAddition(opCode, arr(pos + 1), arr(pos + 2), arr(pos + 3), arr)
-        case 2 => doMultiplication(opCode, arr(pos + 1), arr(pos + 2), arr(pos + 3), arr)
-        case 3 => arr(arr(pos + 1)) = input
-        case 4 => {
-          if((opCode / 100) % 10 == 0) output.append(arr(arr(pos + 1)))
-          else output.append(arr(pos + 1))
+        case 1 => {
+          arr(writeLoc) = param1 + param2
+        }
+        case 2 => {
+          arr(writeLoc) = param1 * param2
+        }
+        case 3 => arr(writeLoc) = input
+        case 4 => output.append(param1)
+        case 5 =>
+        case 6 =>
+        case 7 => {
+          if(param1 < param2) arr(writeLoc) = 1
+          else arr(writeLoc) = 0
+        }
+        case 8 => {
+          if(param1 == param2) arr(writeLoc) = 1
+          else arr(writeLoc) = 0
+        }
+
+      }
+      val newPos = {
+        cmd match {
+          case 1 => pos + 4 //opcode + 3 parameters
+          case 2 => pos + 4
+          case 3 => pos + 2 //opcode + 1 parameter
+          case 4 => pos + 2
+          case 5 => {
+            if(param1 != 0) param2
+            else pos + 3 //opcode + 2 parameters
+          }
+          case 6 => {
+            if(param1 == 0) param2
+            else pos + 3
+          }
+          case 7 => pos + 4
+          case 8 => pos + 4
         }
       }
-
-
-      val offset = {
-        if(cmd < 3) 4
-        else 2
-      }
-      computeArray(arr, pos + offset)
+      computeArray(arr, newPos, input, output)
     }
   }
 
+  def doCompute(program:Array[Int], input:Int):String = {
+    val output = new StringBuilder
+    //pass a clone otherwise it will alter the original input array
+    computeArray(program.clone(), 0, input, output)
+    output.toString()
+  }
 
-  val program = getInputString
-  computeArray(Day02.processInput(program), 0)
-  println(output.toString())
+  val program = getInputString.split(",").map(_.toInt)
+  printPartOne(doCompute(program, 1))
+  printPartTwo(doCompute(program, 5))
+
 }
