@@ -1,14 +1,17 @@
-import scala.collection.mutable.ListBuffer
+import scala.annotation.tailrec
 
 object Day06 extends AOCSolution {
-
 
   override var day = 6
 
   def processInput(input:List[String]): Map[String, String] = {
-    (for (x <- input) yield (x.split("\\)")(1) -> x.split("\\)")(0))).toMap
+    //input is in the format "Planet)Satellite", which
+    //becomes a satellite -> planet mapping, because each
+    //satellite can only orbit around one planet
+    (for (x <- input) yield x.split("\\)")(1) -> x.split("\\)")(0)).toMap
   }
-  @scala.annotation.tailrec
+
+  @tailrec
   def countOrbits(orbitMap:Map[String, String], satName:String, count:Int): Int = {
     if(!orbitMap.contains(satName)) count
     else countOrbits(orbitMap, orbitMap(satName), count + 1)
@@ -21,17 +24,14 @@ object Day06 extends AOCSolution {
   }
 
   def minPathToSanta(orbitMap: Map[String, String]): Int = {
-    val start = orbitMap("YOU")
-    val end = orbitMap("SAN")
-
-    @scala.annotation.tailrec
-    def getPathToCom(s:String, path:ListBuffer[String]):List[String] = {
-      if(s == "COM") path.toList
-      else getPathToCom(orbitMap(s), path.addOne(s))
+    @tailrec
+    def getPathToCom(s:String, path:List[String]):List[String] = {
+      if(s == "COM") path
+      else getPathToCom(orbitMap(s), path :+ s)
     }
     //first get the full path from YOU and SAN to the end point COM
-    val youPath = getPathToCom(start, ListBuffer())
-    val sanPath = getPathToCom(end, ListBuffer())
+    val youPath = getPathToCom(orbitMap("YOU"), List())
+    val sanPath = getPathToCom(orbitMap("SAN"), List())
 
     //next get the first point where the two paths intersect
     val crossPoint = youPath.intersect(sanPath).head
