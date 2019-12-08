@@ -14,11 +14,11 @@ object Day07 extends AOCSolution {
     List(0,1,2,3,4).permutations.map(p => amplify(program, p.toArray)).max
   }
   def amplifyFeedbackLoop(program:Array[Int], phases:Array[Int]):Int = {
-    val A = IntCodeComputer(program, phases(0), pause = true)
-    val B = IntCodeComputer(program, phases(1), pause = true)
-    val C = IntCodeComputer(program, phases(2), pause = true)
-    val D = IntCodeComputer(program, phases(3), pause = true)
-    val E = IntCodeComputer(program, phases(4), pause = true)
+    val A = IntCodeComputer(program, phases(0))
+    val B = IntCodeComputer(program, phases(1))
+    val C = IntCodeComputer(program, phases(2))
+    val D = IntCodeComputer(program, phases(3))
+    val E = IntCodeComputer(program, phases(4))
     var output = 0
     while(!E.complete){
       output = E.run(D.run(C.run(B.run(A.run(output)))))

@@ -2,8 +2,7 @@ import scala.annotation.tailrec
 import scala.collection.mutable
 
 class IntCodeComputer(val program:Array[Int],
-                      val inputs:mutable.Queue[Int],
-                      val pauseAfterOutput:Boolean) {
+                      val inputs:mutable.Queue[Int]) {
 
   val output = new StringBuilder
   var complete = false
@@ -22,7 +21,7 @@ class IntCodeComputer(val program:Array[Int],
     result.toIntOption.getOrElse(lastOutput)
   }
   @tailrec
-  final def compute(pointer: Integer): String = {
+  final def compute(pointer: Int): String = {
 
     val opCode = program(pointer)
     val cmd = opCode % 100
@@ -46,6 +45,7 @@ class IntCodeComputer(val program:Array[Int],
         else if(Array(1,2,7,8).contains(cmd)) program(pointer + 3)
         else 0
       }
+      var pause = false
       val newPointer = cmd match {
         case 1 => {
           program(writeLoc) = param1 + param2
@@ -56,7 +56,8 @@ class IntCodeComputer(val program:Array[Int],
           pointer + 4
         }
         case 3 => {
-          program(writeLoc) = inputs.dequeue()
+          if(inputs.nonEmpty) program(writeLoc) = inputs.dequeue
+          else pause = true //pause and wait for new input
           pointer + 2
         }
         case 4 => {
@@ -83,8 +84,8 @@ class IntCodeComputer(val program:Array[Int],
         }
 
       }
-      if(cmd == 4 && pauseAfterOutput) {
-        currentPointer = newPointer
+      if(pause) {
+        currentPointer = pointer //we want to be able to pick up where we left off
         output.toString
       }
       else compute(newPointer)
@@ -93,8 +94,8 @@ class IntCodeComputer(val program:Array[Int],
 }
 
 object IntCodeComputer{
-  def apply(program:Array[Int], phase:Int = -1, pause:Boolean = false): IntCodeComputer = {
-    new IntCodeComputer(program.clone(), mutable.Queue(phase), pause)
+  def apply(program:Array[Int], phase:Int = -1): IntCodeComputer = {
+    new IntCodeComputer(program.clone(), mutable.Queue(phase))
   }
 }
 
