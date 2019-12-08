@@ -4,9 +4,8 @@ object Day05 extends AOCSolution {
   override var day = 5
 
   def doCompute(program:Array[Int], input:Int):String = {
-    val icc = new IntCodeComputer(input)
-    icc.compute(program.clone(), 0)
-    icc.output.toString()
+    val icc = IntCodeComputer(program.clone(), input)
+    icc.compute(0)
   }
 
   val program = getInputString.split(",").map(_.toInt)

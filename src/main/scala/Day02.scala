@@ -9,21 +9,11 @@ object Day02 extends AOCSolution {
     str.split(",").map(_.toInt)
   }
 
-  @tailrec
-  def computeArray(start: Integer, arr:Array[Int]): Array[Int] = {
-    val cmd = arr(start)
-    if(cmd == 99) arr
-    else {
-      val index1 = arr(start + 1)
-      val index2 = arr(start + 2)
-      val loc = arr(start + 3)
-      if (cmd == 1) {
-        arr(loc) = arr(index1) + arr(index2)
-      } else if (cmd == 2) {
-        arr(loc) = arr(index1) * arr(index2)
-      }
-      computeArray(start + 4, arr)
-    }
+
+  def computeArray(arr:Array[Int]): Array[Int] = {
+    val icc = IntCodeComputer(arr)
+    icc.compute(0)
+    icc.program
   }
 
 
@@ -33,7 +23,7 @@ object Day02 extends AOCSolution {
     val arr = orig.clone
     arr(1) = noun
     arr(2) = verb
-    computeArray(0, arr)(0)
+    computeArray(arr)(0)
   }
 
   printPartOne(checkInputs(12, 2))
