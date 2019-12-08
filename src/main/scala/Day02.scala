@@ -5,19 +5,13 @@ object Day02 extends AOCSolution {
 
   override var day: Int = 2
 
-  def processInput(str:String): Array[Int] = {
-    str.split(",").map(_.toInt)
-  }
-
-
   def computeArray(arr:Array[Int]): Array[Int] = {
     val icc = IntCodeComputer(arr)
     icc.compute(0)
     icc.program
   }
 
-
-  val orig:Array[Int] = processInput(getInputString)
+  val orig:Array[Int] = getInputAsIntArray
 
   def checkInputs(noun: Int, verb: Int):Int = {
     val arr = orig.clone

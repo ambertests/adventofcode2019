@@ -8,7 +8,7 @@ object Day05 extends AOCSolution {
     icc.compute(0)
   }
 
-  val program = getInputString.split(",").map(_.toInt)
+  val program = getInputAsIntArray
   printPartOne(doCompute(program, 1))
   printPartTwo(doCompute(program, 5))
 }

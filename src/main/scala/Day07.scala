@@ -29,7 +29,7 @@ object Day07 extends AOCSolution {
     List(5,6,7,8,9).permutations.map(p => amplifyFeedbackLoop(program, p.toArray)).max
   }
 
-  val program = getInputString.split(",").map(_.toInt)
+  val program = getInputAsIntArray
   printPartOne(findMaxAmp(program))
   printPartTwo(findMaxFeedbackLoop(program))
 

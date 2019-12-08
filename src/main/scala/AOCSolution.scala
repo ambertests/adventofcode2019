@@ -15,6 +15,10 @@ trait AOCSolution extends App {
     getInputStrings(0)
   }
 
+  def getInputAsIntArray: Array[Int] = {
+    getInputString.split(",").map(_.toInt)
+  }
+
   def printPartOne(answer: Any): Unit = printAnswer(1, answer)
   def printPartTwo(answer: Any): Unit = printAnswer(2, answer)
 

@@ -1,11 +1,6 @@
 import org.scalatest.FunSpec
 
 class Day02Test extends FunSpec {
-  describe("Input processor"){
-    it("turns a comma-delimited string into an array of ints"){
-      assert(Day02.processInput("1,2,3") sameElements  Array(1,2,3))
-    }
-  }
 
   describe("Array computer"){
     it("handles addition correctly"){
