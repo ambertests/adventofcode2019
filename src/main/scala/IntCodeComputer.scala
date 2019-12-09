@@ -1,27 +1,26 @@
 import scala.annotation.tailrec
 import scala.collection.mutable
 
-class IntCodeComputer(val program:Array[BigInt],
-                      val inputs:mutable.Queue[BigInt]) {
+class IntCodeComputer(val program:Array[Long],
+                      val inputs:mutable.Queue[Long]) {
 
   val output = new StringBuilder
   var complete = false
   var currentPointer = 0
   var relativeBase = 0
 
-  def getParamValue(pType:Int, pPosition:Int, arr:Array[BigInt]): BigInt = {
+  def getParamValue(pType:Int, pPosition:Int, arr:Array[Long]): Long = {
     if(pType == 0) arr(arr(pPosition).intValue)
     else if (pType == 1) arr(pPosition)
-    else arr(arr(pPosition + relativeBase).intValue)
+    else arr(arr(pPosition).intValue + relativeBase)
   }
 
-  def run(input: BigInt):BigInt = {
+  def run(input: Long):Long = {
     val lastOutput = output.toString
     output.clear()
     inputs.enqueue(input)
     val result = compute(currentPointer)
-    if(result.isEmpty) BigInt(lastOutput)
-    else BigInt(result)
+    result.toLongOption.getOrElse(lastOutput.toLongOption.getOrElse(0))
   }
   @tailrec
   final def compute(pointer: Int): String = {
@@ -35,8 +34,8 @@ class IntCodeComputer(val program:Array[BigInt],
     else {
       val pType1 = (opCode.intValue / 100) % 10
       val pType2 = (opCode.intValue / 1000) % 10
-      val param1:BigInt = getParamValue(pType1, pointer + 1, program)
-      val param2:BigInt = {
+      val param1:Long = getParamValue(pType1, pointer + 1, program)
+      val param2:Long = {
         // ops 3 and 4 only take one param, so trying to get the second could cause an error
         if(cmd != 3 && cmd != 4 && cmd != 9){
           getParamValue(pType2, pointer + 2, program)
@@ -107,11 +106,9 @@ class IntCodeComputer(val program:Array[BigInt],
 }
 
 object IntCodeComputer{
-  def apply(program:Array[BigInt], phase:BigInt = -1): IntCodeComputer = {
-    val arr:Array[BigInt] = new Array[BigInt](50000)
+  def apply(program:Array[Long], phase:Long = -1): IntCodeComputer = {
+    val arr:Array[Long] = new Array[Long](1024)
     program.copyToArray(arr)
-    //val arr = program.clone() :+ new Array[BigInt](50000 - program.length)
     new IntCodeComputer(arr, {if(phase >= 0)mutable.Queue(phase) else mutable.Queue()})
   }
 }
-
