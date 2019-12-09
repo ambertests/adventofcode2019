@@ -41,7 +41,7 @@ object Day08 extends AOCSolution {
             val c = l(h).toCharArray()(w)
             if(c != '2'){
               if(c == '0') sb.append(' ')
-              else if(c == '1') sb.append('X')
+              else if(c == '1') sb.append('#')
               break
             }
           }
