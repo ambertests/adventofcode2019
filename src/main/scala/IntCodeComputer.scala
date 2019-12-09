@@ -9,10 +9,11 @@ class IntCodeComputer(val program:Array[Long],
   var currentPointer = 0
   var relativeBase = 0
 
-  def getParamValue(pType:Int, pPosition:Int, arr:Array[Long]): Long = {
-    if(pType == 0) arr(arr(pPosition).intValue)
-    else if (pType == 1) arr(pPosition)
-    else arr(arr(pPosition).intValue + relativeBase)
+  def getParamValue(pType:Int, pPosition:Int): Long = {
+    val raw = program(pPosition)
+    if(pType == 0) program(raw.intValue)
+    else if (pType == 1) raw
+    else program(raw.intValue + relativeBase)
   }
 
   def run(input: Long):Long = {
@@ -34,17 +35,28 @@ class IntCodeComputer(val program:Array[Long],
     else {
       val pType1 = (opCode.intValue / 100) % 10
       val pType2 = (opCode.intValue / 1000) % 10
-      val param1:Long = getParamValue(pType1, pointer + 1, program)
+      val pType3 = opCode.intValue / 10000
+      val param1:Long = getParamValue(pType1, pointer + 1)
       val param2:Long = {
         // ops 3 and 4 only take one param, so trying to get the second could cause an error
         if(cmd != 3 && cmd != 4 && cmd != 9){
-          getParamValue(pType2, pointer + 2, program)
+          getParamValue(pType2, pointer + 2)
         }
         else 0
       }
       val writeLoc:Int = {
-        if(cmd == 3) program(pointer + 1).intValue
-        else if(Array(1,2,7,8).contains(cmd)) program(pointer + 3).intValue
+        if(cmd == 3) {
+          if (pType1 == 0)program(pointer + 1).intValue
+          // The relativeBase needs to be added to the *value* of what's in the program
+          else if(pType1 == 2) program(pointer + 1).intValue + relativeBase
+          else -1
+
+        }
+        else if(Array(1,2,7,8).contains(cmd)) {
+          if(pType3 == 0) program(pointer + 3).intValue
+          else if(pType3 == 2) program(pointer + 3).intValue + relativeBase
+          else -1
+        }
         else 0
       }
       var pause = false
@@ -107,7 +119,7 @@ class IntCodeComputer(val program:Array[Long],
 
 object IntCodeComputer{
   def apply(program:Array[Long], phase:Long = -1): IntCodeComputer = {
-    val arr:Array[Long] = new Array[Long](1024)
+    val arr:Array[Long] = new Array[Long](5000)
     program.copyToArray(arr)
     new IntCodeComputer(arr, {if(phase >= 0)mutable.Queue(phase) else mutable.Queue()})
   }
