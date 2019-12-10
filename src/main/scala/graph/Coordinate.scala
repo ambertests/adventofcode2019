@@ -1,3 +1,5 @@
+package graph
+
 case class Coordinate(x: Int, y: Int){
 
   def moveRight(n:Int) = Coordinate(x + n, y)

@@ -1,7 +1,7 @@
 import scala.io.Source
 import scala.util.Using
 
-trait AOCSolution extends App {
+trait Day extends App {
   var day: Int
 
   def getInputStrings: List[String] = {

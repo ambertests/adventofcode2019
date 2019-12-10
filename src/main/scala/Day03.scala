@@ -1,6 +1,8 @@
+import graph.Coordinate
+
 import scala.collection.mutable._
 
-object Day03 extends AOCSolution {
+object Day03 extends Day {
   override var day = 3
 
   def getPath(pos: Coordinate, cmd: String) = {

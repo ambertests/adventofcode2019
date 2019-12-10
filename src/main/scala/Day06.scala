@@ -1,6 +1,6 @@
 import scala.annotation.tailrec
 
-object Day06 extends AOCSolution {
+object Day06 extends Day {
 
   override var day = 6
 

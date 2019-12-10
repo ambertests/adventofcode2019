@@ -1,7 +1,9 @@
+package intcode
+
 import scala.annotation.tailrec
 import scala.collection.mutable
 
-class IntCodeComputer(val program:Array[Long],
+class IntcodeComputer(val program:Array[Long],
                       val inputs:mutable.Queue[Long]) {
 
   val output = new StringBuilder
@@ -117,10 +119,10 @@ class IntCodeComputer(val program:Array[Long],
   }
 }
 
-object IntCodeComputer{
-  def apply(program:Array[Long], phase:Long = -1): IntCodeComputer = {
+object IntcodeComputer{
+  def apply(program:Array[Long], phase:Long = -1): IntcodeComputer = {
     val arr:Array[Long] = new Array[Long](5000)
     program.copyToArray(arr)
-    new IntCodeComputer(arr, {if(phase >= 0)mutable.Queue(phase) else mutable.Queue()})
+    new IntcodeComputer(arr, {if(phase >= 0)mutable.Queue(phase) else mutable.Queue()})
   }
 }

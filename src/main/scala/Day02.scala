@@ -1,12 +1,12 @@
-import scala.annotation.tailrec
+import intcode.IntcodeComputer
 import util.control.Breaks._
 
-object Day02 extends AOCSolution {
+object Day02 extends Day {
 
   override var day: Int = 2
 
   def computeArray(arr:Array[Long]): Array[Long] = {
-    val icc = IntCodeComputer(arr)
+    val icc = IntcodeComputer(arr)
     icc.compute(0)
     icc.program.slice(0,arr.length)
   }

@@ -1,6 +1,6 @@
 import util.control.Breaks._
 
-object Day04 extends AOCSolution {
+object Day04 extends Day {
   override var day = 4
 
   def isValid(i: Int): (Boolean, Boolean) = {

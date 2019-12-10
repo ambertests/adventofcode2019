@@ -1,6 +1,6 @@
 import util.control.Breaks._
 
-object Day08 extends AOCSolution {
+object Day08 extends Day {
   override var day = 8
   def getLayers(encoded: String, width: Int, height: Int):Vector[Vector[String]] = {
     val vol = width*height

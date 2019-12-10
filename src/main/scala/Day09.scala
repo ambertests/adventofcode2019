@@ -1,7 +1,9 @@
-object Day09 extends AOCSolution {
+import intcode.IntcodeComputer
+
+object Day09 extends Day {
   override var day: Int = 9
 
-  printPartOne(IntCodeComputer(getInputAsLongArray, 1).compute(0))
-  printPartTwo(IntCodeComputer(getInputAsLongArray, 2).compute(0))
+  printPartOne(IntcodeComputer(getInputAsLongArray).run(1))
+  printPartTwo(IntcodeComputer(getInputAsLongArray).run(2))
 
 }
